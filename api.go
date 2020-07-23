@@ -99,7 +99,7 @@ func DetectLabelsURI(file string) ([]string, error) {
 
 	image := vision.NewImageFromURI(file)
 
-	annotations, err := client.DetectLabels(ctx, image, nil, 10)
+	annotations, err := client.DetectLabels(ctx, image, nil, 100)
 
 	if err != nil {
 		return labels, err
