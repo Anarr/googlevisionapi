@@ -5,15 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path"
 
 	vision "cloud.google.com/go/vision/apiv1"
 )
 
 //AuthWithCredentials auth app with credentials file
 func AuthWithCredentials(file string) {
-	dir, _ := os.Getwd()
-	file = path.Join(dir, file)
 	//set env variable for pass google auth
 	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", file)
 }
