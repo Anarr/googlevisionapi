@@ -44,6 +44,48 @@ func DetectSafeSearchURI(file string) error {
 	return nil
 }
 
+//DetectLabels detect labels from image
+func DetectLabels(file string) ([]string, err) {
+	var labels []string
+	ctx := context.Background()
+
+	client, err := vision.NewImageAnnotatorClient(ctx)
+
+	if err != nil {
+		return labels, err
+	}
+
+	f, err := os.Open(file)
+
+	if err != nil {
+		return labels, err
+	}
+
+	defer f.Close()
+
+	image, err := vision.NewImageFromReader(f)
+
+	if err != nil {
+		return labels, err
+	}
+
+	annotations, err := client.DetectLabels(ctx, image, nil, 10)
+
+	if err != nil {
+		return labels, err
+	}
+
+	if len(annotations) == 0 {
+		return labels, errors.New("can not detect labels")
+	}
+
+	for _, annotation := range annotations {
+		labels = append(labels, annotation.String())
+	}
+
+	return labels, nil
+}
+
 //DetectLabelsURI detect labels from remote image
 func DetectLabelsURI(file string) ([]string, error) {
 	var labels []string
